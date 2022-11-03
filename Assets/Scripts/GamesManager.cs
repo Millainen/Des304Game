@@ -5,11 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class GamesManager : MonoBehaviour
 {
+    public GameObject canvas;
+    TimeManager timeManagerScrpt;
+
     public static string suspectName;
     public static bool suspectUnderRadar;
 
     public GameObject suspects;
-    public Suspect[] susCode;
+    public static Suspect[] susCode;
 
     public static bool[] suspectsInvestigated = new bool[3];
 
@@ -18,10 +21,15 @@ public class GamesManager : MonoBehaviour
     public GameObject playerCharacter;
     public static Vector2 playerCharPositionRecord = new Vector2();
 
+    bool[] timeAdded;
 
     void Start()
     {
+        timeManagerScrpt = canvas.GetComponent<TimeManager>();
+
         susCode = suspects.GetComponentsInChildren<Suspect>();
+
+        timeAdded = new bool[3];
 
         WhichSuspectsHaveBeenInvestigated();
 
@@ -44,18 +52,28 @@ public class GamesManager : MonoBehaviour
             switch (suspectName)
             {
                 case "John Smith":
-                    suspectsInvestigated[0] = true;
+                    InvestigateWho(0);
                     break;
                 case "Karen Maren":
-                    suspectsInvestigated[1] = true;
+                    InvestigateWho(1);
                     break;
                 case "Katja Kuusi":
-                    suspectsInvestigated[2] = true;
+                    InvestigateWho(2);
                     break;
             }
             //suspect.hasBeenSuspected = true;
             playerCharPositionRecord = playerCharacter.transform.position;
             SceneManager.LoadScene("ReadMind");
             }
+    }
+
+    void InvestigateWho(int who)
+    {
+        if (!timeAdded[who])
+        {
+            timeManagerScrpt.AddTime(susCode[who].minutesItTakesToInvestiGate);
+            timeAdded[who] = true;
+        }
+        suspectsInvestigated[who] = true;
     }
 }

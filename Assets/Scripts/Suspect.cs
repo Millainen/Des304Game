@@ -6,6 +6,8 @@ public class Suspect : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
 
+    public int minutesItTakesToInvestiGate;
+
     public string suspectName;
     public bool isMurderer;
     public bool hasBeenSuspected;
@@ -13,6 +15,8 @@ public class Suspect : MonoBehaviour
     public string[] thoughtsHad;
 
     void Start() {
+        minutesItTakesToInvestiGate = Random.Range(10, 60);
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         suspectedColor = new Color(0.5943396f, 0.2641596f, 0.09251513f, 1);
     }

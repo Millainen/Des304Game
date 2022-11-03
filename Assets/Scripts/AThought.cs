@@ -7,6 +7,9 @@ public class AThought : MonoBehaviour
     public GameObject canvas;
     ReadMindUI readMindUI;
 
+    public GameObject thoughtManager; //should not be this way around
+    ThoughtManager thoughtManagerScrpt;
+
     public string thoughtName;
     public bool isChosen;
     public bool isShown;
@@ -23,6 +26,7 @@ public class AThought : MonoBehaviour
     {
         renderer = thoughtSpriteRef.GetComponent<SpriteRenderer>();
         readMindUI = canvas.GetComponent<ReadMindUI>();
+        thoughtManagerScrpt = thoughtManager.GetComponent<ThoughtManager>();
 
         isChosen = false;
 
@@ -64,8 +68,11 @@ public class AThought : MonoBehaviour
         if (!isShown) renderer.color = notShown; else renderer.color = shown;
 
         if (isChosen && Input.GetMouseButtonDown(0)){
-            print("this works");
-            isShown = true;
+            if(ThoughtManager.thoughtsYouHaveRead < ThoughtManager.maxThoughtsYouCanRead)
+            {
+                thoughtManagerScrpt.ShoShoShowThoughts();
+                isShown = true;
+            }
         }
     }
 
@@ -76,7 +83,7 @@ public class AThought : MonoBehaviour
             isChosen = true;
 
             CursorCode cursorCode = other.GetComponent<CursorCode>();
-            readMindUI.UpdateTheText(true);
+            readMindUI.UpdateTheClickText(true);
             cursorCode.investigate = true;
             thoughtChosenVisual.gameObject.SetActive(true);
         }
@@ -89,7 +96,7 @@ public class AThought : MonoBehaviour
             isChosen = false;
 
             CursorCode cursorCode = other.GetComponent<CursorCode>();
-            readMindUI.UpdateTheText(false);
+            readMindUI.UpdateTheClickText(false);
             cursorCode.investigate = false;
             thoughtChosenVisual.gameObject.SetActive(false);
         }

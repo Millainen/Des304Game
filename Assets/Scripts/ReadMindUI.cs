@@ -7,10 +7,12 @@ using TMPro;
 public class ReadMindUI : MonoBehaviour
 {
     public TextMeshProUGUI clickText;
+    public TextMeshProUGUI thoughtAmountText;
 
     void Awake()
     {
-        UpdateTheText(false);
+        UpdateTheClickText(false);
+        UpdateTheThoughtsReadText();
     }
 
     void Update()
@@ -19,9 +21,14 @@ public class ReadMindUI : MonoBehaviour
             SceneManager.LoadScene("InvestigationRoom");
     }
 
-    public void UpdateTheText(bool tellToClick)
+    public void UpdateTheClickText(bool tellToClick)
     {
         if (tellToClick) clickText.text = "Click to view thought."; else clickText.text= "Choose a thought to view.";
+    }
+
+    public void UpdateTheThoughtsReadText()
+    {
+        thoughtAmountText.text = ThoughtManager.thoughtsYouHaveRead.ToString() + "/" + ThoughtManager.maxThoughtsYouCanRead.ToString() + " of the thoughts read.";
     }
 
     public void Ok()

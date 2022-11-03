@@ -9,19 +9,19 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI suspectText;
     public TextMeshProUGUI currentTimeText;
     public TextMeshProUGUI investigationStopTimeText;
+    public TextMeshProUGUI thoughtsText;
 
     string theText;
-
-    public int[] timeInMinutes = new int[3];
 
     private void Start()
     {
         suspectText = GetComponentInChildren<TextMeshProUGUI>();
         suspectText.gameObject.SetActive(false);
-        CalculateRandomTimes();
     }
     void Update()
     {
+        thoughtsText.text = ThoughtManager.thoughtsYouHaveRead + "/" + ThoughtManager.maxThoughtsYouCanRead + " thoughts read.";
+
         if (GamesManager.suspectUnderRadar)
         {
             DetermineTheText();
@@ -30,13 +30,9 @@ public class UIManager : MonoBehaviour
         }
         else
             suspectText.gameObject.SetActive(false);
-    }
 
-    void CalculateRandomTimes()
-    {
-        if (timeInMinutes[0] == 0) timeInMinutes[0] = Random.Range(10, 60);
-        if (timeInMinutes[1] == 0) timeInMinutes[1] = Random.Range(9, 65);
-        if (timeInMinutes[2] == 0) timeInMinutes[2] = Random.Range(20, 40);
+        currentTimeText.text = "Time: " + TimeManager.currentTimeHours.ToString() + ":" + TimeManager.currentTimeMinutes.ToString();
+        investigationStopTimeText.text = "Investigation stops at " + TimeManager.investigationStopTimeHours.ToString() + ":" + TimeManager.investigationStopTimeMinutes.ToString();
     }
 
     void DetermineTheText()
@@ -45,19 +41,19 @@ public class UIManager : MonoBehaviour
         {
             case "John Smith":
                 if (GamesManager.suspectsInvestigated[0] == false)
-                    theText = ". \nIt will take " + timeInMinutes[0].ToString() + " minutes to investigate him.";
+                    theText = ". \nIt will take " + GamesManager.susCode[0].minutesItTakesToInvestiGate.ToString() + " minutes to investigate him.";
                 else
                     theText = ". \nYou have already investigated him.";
                 break;
             case "Karen Maren":
                 if (GamesManager.suspectsInvestigated[1] == false)
-                    theText = ". \nIt will take " + timeInMinutes[1].ToString() + " minutes to investigate her.";
+                    theText = ". \nIt will take " + GamesManager.susCode[1].minutesItTakesToInvestiGate.ToString() + " minutes to investigate her.";
                 else
                     theText = ". \nYou have already investigated her.";
                 break;
             case "Katja Kuusi":
                 if (GamesManager.suspectsInvestigated[2] == false)
-                    theText = ". \nIt will take " + timeInMinutes[2].ToString() + " minutes to investigate her.";
+                    theText = ". \nIt will take " + GamesManager.susCode[2].minutesItTakesToInvestiGate.ToString() + " minutes to investigate her.";
                 else
                     theText = ". \nYou have already investigated her.";
                 break;
